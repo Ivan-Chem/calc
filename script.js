@@ -1,5 +1,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
-import { getFirestore, doc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
+import { 
+  getFirestore, 
+  doc, 
+  updateDoc, 
+  onSnapshot 
+} from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
 
 // Конфигурация Firebase
 const firebaseConfig = {
@@ -59,7 +64,6 @@ buttons.forEach(button => {
     // Синхронизация с Firebase
     try {
       await updateDoc(calcRef, { input: currentExpression });
-      console.log("Данные обновлены!");
     } catch (error) {
       console.error("Ошибка синхронизации:", error);
     }
@@ -72,7 +76,5 @@ onSnapshot(calcRef, (doc) => {
     const data = doc.data();
     currentExpression = data.input || "";
     display.textContent = currentExpression || "0";
-  } else {
-    console.log("Документ не найден!");
   }
 });
