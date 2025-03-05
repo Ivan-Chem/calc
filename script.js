@@ -1,68 +1,71 @@
-// Начало файла script.js
-// Вставьте свои данные из Firebase здесь!
+// Конфигурация Firebase (ваши данные)
 const firebaseConfig = {
-
   apiKey: "AIzaSyA9Lw68k8CFaUuzXFLwznF-Roya3zAhkRA",
-
   authDomain: "synccalc.firebaseapp.com",
-
   projectId: "synccalc",
-
   storageBucket: "synccalc.firebasestorage.app",
-
   messagingSenderId: "652185025907",
-
   appId: "1:652185025907:web:c0cedf5f663371c97c5906",
-
   measurementId: "G-DB5Z4QYRH6"
-
 };
 
-
+// Инициализация Firebase
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const db = firebase.firestore();
 
-// Создание кнопок калькулятора
-const buttons = [
-    '7', '8', '9', '÷', 
-    '4', '5', '6', '×', 
-    '1', '2', '3', '-', 
-    '0', '.', '=', '+'
-];
+// Ссылка на документ Firestore
+const calcRef = db.collection("calc").doc("current");
 
-const container = document.querySelector('.calculator');
-buttons.forEach(btn => {
-    const button = document.createElement('button');
-    button.textContent = btn;
-    button.onclick = () => handleButton(btn);
-    container.appendChild(button);
+// Элементы интерфейса
+const display = document.getElementById("display");
+const buttons = document.querySelectorAll("button");
+
+// Переменные для хранения текущего выражения и результата
+let currentExpression = "";
+let resultDisplayed = false;
+
+// Обработка нажатий кнопок
+buttons.forEach(button => {
+  button.addEventListener("click", () => {
+    const value = button.getAttribute("data-value");
+
+    // Обработка нажатий
+    if (value === "=") {
+      // Вычисление результата
+      try {
+        const result = eval(currentExpression);
+        display.textContent = result;
+        currentExpression = result.toString();
+        resultDisplayed = true;
+      } catch (error) {
+        display.textContent = "Ошибка";
+        currentExpression = "";
+      }
+    } else if (value === "C") {
+      // Очистка экрана
+      display.textContent = "0";
+      currentExpression = "";
+    } else {
+      // Добавление символов к выражению
+      if (resultDisplayed) {
+        currentExpression = value;
+        resultDisplayed = false;
+      } else {
+        currentExpression += value;
+      }
+      display.textContent = currentExpression;
+    }
+
+    // Синхронизация с Firebase
+    calcRef.update({ input: currentExpression });
+  });
 });
 
-// Синхронизация
-db.ref('calc').on('value', (snapshot) => {
-    const data = snapshot.val();
-    document.getElementById('expression').textContent = data.expression || '';
-    document.getElementById('result').textContent = data.result || '0';
+// Синхронизация данных
+calcRef.onSnapshot((doc) => {
+  const data = doc.data();
+  if (data) {
+    currentExpression = data.input || "";
+    display.textContent = currentExpression || "0";
+  }
 });
-
-function handleButton(value) {
-    const button = event.target;
-    button.classList.add('active');
-    setTimeout(() => button.classList.remove('active'), 200);
-
-    db.ref('calc').transaction(data => {
-        // Логика вычислений
-        if (value === '=') {
-            try {
-                data.result = eval(data.expression.replace(/×/g, '*').replace(/÷/g, '/'));
-                data.expression = '';
-            } catch {
-                data.result = 'Error';
-            }
-        } else {
-            data.expression = (data.expression || '') + value;
-        }
-        return data;
-    });
-}
-// Конец файла script.js
