@@ -4,55 +4,72 @@ body {
   align-items: center;
   height: 100vh;
   margin: 0;
-  background: #2c3e50;
-  font-family: Arial, sans-serif;
+  background: #dcdcdc;
+  font-family: 'Courier New', monospace;
 }
 
 .calculator {
-  background: #34495e;
+  background: #a0a0a0;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 
+    0 0 10px rgba(0,0,0,0.3),
+    inset 0 0 15px rgba(255,255,255,0.5);
+  width: 340px;
 }
 
 .display {
-  background: #2c3e50;
-  color: #ecf0f1;
-  font-size: 2.5em;
-  padding: 15px;
-  text-align: right;
+  background: #c3d7c3;
+  color: #1a1a1a;
+  padding: 10px;
   border-radius: 5px;
   margin-bottom: 15px;
+  text-align: right;
+  font-size: 2.5em;
   min-height: 60px;
+  border: 2px solid #808080;
+}
+
+.display-label {
+  font-size: 0.4em;
+  color: #404040;
+  text-align: left;
 }
 
 .buttons {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
+  gap: 8px;
 }
 
 button {
-  background: #7f8c8d;
-  color: white;
-  border: none;
+  background: #e0e0e0;
+  border: 2px solid #808080;
   border-radius: 5px;
-  padding: 20px;
+  padding: 12px;
   font-size: 1.2em;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.1s;
 }
 
 button:active {
-  background: #95a5a6;
+  background: #c0c0c0;
+  transform: scale(0.95);
+}
+
+button.func {
+  background: #f0f0f0;
+  font-size: 0.9em;
+}
+
+button.equal {
+  background: #ff9500;
+  color: white;
+  grid-row: span 2;
 }
 
 button[data-value="AC"],
 button[data-value="DEL"] {
-  background: #e74c3c;
-}
-
-button[data-value="="] {
-  background: #3498db;
-  grid-column: span 2;
+  background: #ff4444;
+  color: white;
 }
