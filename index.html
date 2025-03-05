@@ -8,48 +8,54 @@
 </head>
 <body>
   <div class="calculator">
-    <!-- Курсорная кнопка как у оригинала -->
-    <div class="cursor-btn">◀▲▼▶</div>
-
     <!-- Дисплей -->
     <div class="display">
       <div class="display-label">DEG</div>
       <div class="display-value" id="display">0</div>
     </div>
 
-    <!-- Кнопки -->
-    <div class="buttons">
-      <!-- Верхние узкие кнопки -->
-      <button class="narrow" data-value="shift">SHIFT</button>
-      <button class="narrow" data-value="alpha">ALPHA</button>
-      <button class="narrow" data-value="mode">MODE</button>
-      <button class="narrow" data-value="√(">√</button>
-      <button class="narrow" data-value="x^3">x³</button>
+    <!-- Верхние узкие кнопки -->
+    <div class="top-buttons">
+      <button class="top-btn" data-value="shift">SHIFT</button>
+      <button class="top-btn" data-value="alpha">ALPHA</button>
+      <button class="top-btn" data-value="mode">MODE</button>
+      <button class="top-btn" data-value="√(">√</button>
+      <button class="top-btn" data-value="x^3">x³</button>
+    </div>
 
-      <!-- Основные ряды -->
-      <button data-value="7">7</button>
-      <button data-value="8">8</button>
-      <button data-value="9">9</button>
-      <button class="func" data-value="DEL">DEL</button>
-      <button class="func" data-value="AC">AC</button>
+    <!-- Основные кнопки (4 нижних ряда) -->
+    <div class="main-buttons">
+      <div class="row">
+        <button class="main-btn" data-value="7">7</button>
+        <button class="main-btn" data-value="8">8</button>
+        <button class="main-btn" data-value="9">9</button>
+        <button class="func main-btn" data-value="DEL">DEL</button>
+        <button class="func main-btn" data-value="AC">AC</button>
+      </div>
 
-      <button data-value="4">4</button>
-      <button data-value="5">5</button>
-      <button data-value="6">6</button>
-      <button data-value="×">×</button>
-      <button data-value="÷">÷</button>
+      <div class="row">
+        <button class="main-btn" data-value="4">4</button>
+        <button class="main-btn" data-value="5">5</button>
+        <button class="main-btn" data-value="6">6</button>
+        <button class="main-btn" data-value="×">×</button>
+        <button class="main-btn" data-value="÷">÷</button>
+      </div>
 
-      <button data-value="1">1</button>
-      <button data-value="2">2</button>
-      <button data-value="3">3</button>
-      <button data-value="+">+</button>
-      <button data-value="-">-</button>
+      <div class="row">
+        <button class="main-btn" data-value="1">1</button>
+        <button class="main-btn" data-value="2">2</button>
+        <button class="main-btn" data-value="3">3</button>
+        <button class="main-btn" data-value="+">+</button>
+        <button class="main-btn" data-value="-">-</button>
+      </div>
 
-      <button data-value="0">0</button>
-      <button data-value=".">.</button>
-      <button data-value="EXP">EXP</button>
-      <button data-value="(-)">(-)</button>
-      <button class="equal" data-value="=">=</button>
+      <div class="row">
+        <button class="main-btn" data-value="0">0</button>
+        <button class="main-btn" data-value=".">.</button>
+        <button class="main-btn" data-value="EXP">EXP</button>
+        <button class="main-btn" data-value="(-)">(-)</button>
+        <button class="equal main-btn" data-value="=">=</button>
+      </div>
     </div>
   </div>
   <script type="module" src="script.js"></script>

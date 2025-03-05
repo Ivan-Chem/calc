@@ -1,50 +1,77 @@
 /* Позиционирование калькулятора */
 body {
   display: flex;
-  justify-content: flex-start; /* Сдвиг к верхнему краю */
-  align-items: flex-start;
+  justify-content: flex-start; /* У верхнего края */
+  align-items: center;
   padding-top: 20px;
   min-height: 100vh;
   margin: 0;
   background: #dcdcdc;
+  font-family: 'Courier New', monospace;
 }
 
-/* Курсорная кнопка */
-.cursor-btn {
-  width: 100%;
-  height: 30px;
-  border-radius: 15px;
-  background: #e0e0e0;
+.calculator {
+  background: #a0a0a0;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  width: 320px;
+  margin: 0 auto;
+}
+
+/* Дисплей */
+.display {
+  background: #c3d7c3;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  text-align: right;
+  font-size: 2em;
   border: 2px solid #808080;
-  margin-bottom: 10px;
-  font-size: 0.8em;
 }
 
-/* Кнопки */
-.buttons {
+/* Верхние кнопки (уже и ниже) */
+.top-buttons {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 5px;
+  margin-bottom: 10px;
 }
 
-/* Узкие верхние кнопки */
-button.narrow {
-  width: 50px;
-  height: 30px;
+.top-btn {
+  height: 30px; /* Меньшая высота */
   font-size: 0.8em;
+  padding: 0;
 }
 
-/* Основные кнопки (нижние 4 ряда) */
-button:not(.narrow) {
-  width: 60px;
-  height: 40px;
+/* Основные кнопки (4 нижних ряда) */
+.main-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
-/* Кнопка "=" (без выступа) */
-button.equal {
-  height: 40px;
+.row {
+  display: flex;
+  gap: 5px;
+}
+
+.main-btn {
+  width: 60px; /* Фиксированная ширина */
+  height: 45px; /* Фиксированная высота */
+  flex: 1;
+}
+
+/* Кнопка "=" без выступа */
+.equal {
   background: #ff9500;
-  margin-top: 0; /* Убрать выступ */
+  color: white;
+}
+
+/* Функциональные кнопки */
+.func {
+  background: #ff4444;
+  color: white;
 }
 
 /* Адаптация для мобильных */
@@ -52,16 +79,14 @@ button.equal {
   .calculator {
     width: 95%;
     padding: 10px;
-    margin-top: 10px;
   }
 
-  button:not(.narrow) {
-    width: 100%;
+  .main-btn {
+    width: 100%; 
     height: 50px;
   }
 
-  button.narrow {
-    width: 100%;
-    height: 40px;
+  .top-btn {
+    height: 35px;
   }
 }
