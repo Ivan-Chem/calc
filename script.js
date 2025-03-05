@@ -6,7 +6,6 @@ import {
   onSnapshot 
 } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
 
-// Конфигурация Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyA9Lw68k8CFaUuzXFLwznF-Roya3zAhkRA",
   authDomain: "synccalc.firebaseapp.com",
@@ -17,64 +16,76 @@ const firebaseConfig = {
   measurementId: "G-DB5Z4QYRH6"
 };
 
-// Инициализация Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
-// Ссылка на документ Firestore
 const calcRef = doc(db, "calc", "current");
 
-// Элементы интерфейса
 const display = document.getElementById("display");
 const buttons = document.querySelectorAll("button");
 
-// Переменные для хранения текущего выражения и результата
 let currentExpression = "";
 let resultDisplayed = false;
 
-// Обработка нажатий кнопок
+// Функция для подсветки кнопки
+function highlightButton(value) {
+  const button = [...buttons].find(btn => btn.dataset.value === value);
+  if (button) {
+    button.style.backgroundColor = "#666";
+    setTimeout(() => {
+      button.style.backgroundColor = "#444";
+    }, 300);
+  }
+}
+
 buttons.forEach(button => {
   button.addEventListener("click", async () => {
-    const value = button.getAttribute("data-value");
+    const value = button.dataset.value;
+    
+    // Подсветка нажатой кнопки
+    highlightButton(value);
 
-    // Обработка нажатий
     if (value === "=") {
       try {
         const result = eval(currentExpression);
-        display.textContent = result;
         currentExpression = result.toString();
+        display.textContent = currentExpression;
         resultDisplayed = true;
-      } catch (error) {
+      } catch {
         display.textContent = "Ошибка";
         currentExpression = "";
       }
     } else if (value === "C") {
-      display.textContent = "0";
       currentExpression = "";
+      display.textContent = "0";
+      resultDisplayed = false;
     } else {
-      if (resultDisplayed) {
-        currentExpression = value;
-        resultDisplayed = false;
-      } else {
-        currentExpression += value;
-      }
+      currentExpression = resultDisplayed ? value : currentExpression + value;
       display.textContent = currentExpression;
+      resultDisplayed = false;
     }
 
-    // Синхронизация с Firebase
     try {
-      await updateDoc(calcRef, { input: currentExpression });
+      await updateDoc(calcRef, {
+        input: currentExpression,
+        timestamp: new Date().toISOString() // Для принудительного обновления
+      });
     } catch (error) {
       console.error("Ошибка синхронизации:", error);
     }
   });
 });
 
-// Синхронизация данных
+// Слушатель изменений в Firestore
 onSnapshot(calcRef, (doc) => {
   if (doc.exists()) {
     const data = doc.data();
     currentExpression = data.input || "";
     display.textContent = currentExpression || "0";
+    
+    // Подсветка последней нажатой кнопки
+    if (data.input && data.input.length > 0) {
+      const lastChar = data.input.slice(-1);
+      highlightButton(lastChar);
+    }
   }
 });
