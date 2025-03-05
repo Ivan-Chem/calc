@@ -1,4 +1,7 @@
-// Конфигурация Firebase (ваши данные)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+import { getFirestore, doc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
+
+// Конфигурация Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyA9Lw68k8CFaUuzXFLwznF-Roya3zAhkRA",
   authDomain: "synccalc.firebaseapp.com",
@@ -10,11 +13,11 @@ const firebaseConfig = {
 };
 
 // Инициализация Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 // Ссылка на документ Firestore
-const calcRef = db.collection("calc").doc("current");
+const calcRef = doc(db, "calc", "current");
 
 // Элементы интерфейса
 const display = document.getElementById("display");
@@ -26,12 +29,11 @@ let resultDisplayed = false;
 
 // Обработка нажатий кнопок
 buttons.forEach(button => {
-  button.addEventListener("click", () => {
+  button.addEventListener("click", async () => {
     const value = button.getAttribute("data-value");
 
     // Обработка нажатий
     if (value === "=") {
-      // Вычисление результата
       try {
         const result = eval(currentExpression);
         display.textContent = result;
@@ -42,11 +44,9 @@ buttons.forEach(button => {
         currentExpression = "";
       }
     } else if (value === "C") {
-      // Очистка экрана
       display.textContent = "0";
       currentExpression = "";
     } else {
-      // Добавление символов к выражению
       if (resultDisplayed) {
         currentExpression = value;
         resultDisplayed = false;
@@ -57,15 +57,22 @@ buttons.forEach(button => {
     }
 
     // Синхронизация с Firebase
-    calcRef.update({ input: currentExpression });
+    try {
+      await updateDoc(calcRef, { input: currentExpression });
+      console.log("Данные обновлены!");
+    } catch (error) {
+      console.error("Ошибка синхронизации:", error);
+    }
   });
 });
 
 // Синхронизация данных
-calcRef.onSnapshot((doc) => {
-  const data = doc.data();
-  if (data) {
+onSnapshot(calcRef, (doc) => {
+  if (doc.exists()) {
+    const data = doc.data();
     currentExpression = data.input || "";
     display.textContent = currentExpression || "0";
+  } else {
+    console.log("Документ не найден!");
   }
 });
