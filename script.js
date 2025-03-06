@@ -1,33 +1,20 @@
-// ... предыдущий код ...
+// Остается прежним, но с добавлением обработки индикаторов:
 
-// Обработка памяти
-function handleMemory(value) {
-  switch(value) {
-    case "M+":
-      memory += parseFloat(display.textContent);
-      break;
-    case "M-":
-      memory -= parseFloat(display.textContent);
-      break;
-    case "MR":
-      currentExpression += memory.toString();
-      display.textContent = currentExpression;
-      break;
-    case "MC":
-      memory = 0;
-      break;
-  }
+// В обработчике кнопки M+
+case "M+":
+  memory += parseFloat(display.textContent);
+  document.querySelector('.memory-indicator').style.visibility = memory ? 'visible' : 'hidden';
+  break;
+
+// В обработчике SHIFT
+case "shift":
+  isShift = !isShift;
+  document.querySelector('.shift-indicator').style.visibility = isShift ? 'visible' : 'hidden';
+  // Остальная логика...
+  break;
+
+// Добавить в CSS:
+.memory-indicator,
+.shift-indicator {
+  visibility: hidden;
 }
-
-buttons.forEach(button => {
-  button.addEventListener("click", async () => {
-    // ... предыдущий код ...
-
-    // Обработка памяти
-    if (["M+", "M-", "MR", "MC"].includes(value)) {
-      handleMemory(value);
-    }
-
-    // ... остальной код ...
-  });
-});
