@@ -24,19 +24,13 @@ const display = document.getElementById("display");
 const buttons = document.querySelectorAll("button");
 let currentExpression = "";
 let resultDisplayed = false;
-let isShift = false;
-let isAlpha = false;
-let memory = 0;
-
-// Состояния калькулятора
-const state = {
+let state = {
   shift: false,
   alpha: false,
   hyp: false,
-  mode: 'COMP'
+  memory: 0
 };
 
-// Математические функции
 const mathMap = {
   'sin(': 'Math.sin(',
   'cos(': 'Math.cos(',
@@ -44,73 +38,39 @@ const mathMap = {
   'sin⁻¹(': 'Math.asin(',
   'cos⁻¹(': 'Math.acos(',
   'tan⁻¹(': 'Math.atan(',
+  '√(': 'Math.sqrt(',
+  '∛': 'Math.cbrt(',
   'log': 'Math.log10(',
   'ln': 'Math.log(',
-  '√(': 'Math.sqrt(',
-  '∛(': 'Math.cbrt(',
-  '10ˣ': '10**',
-  'eˣ': 'Math.exp(',
   'π': 'Math.PI',
-  'e': 'Math.E',
+  'eˣ': 'Math.exp(',
+  '10ˣ': '10**',
   'Rnd': 'Math.round(',
   'Pol(': 'Math.atan2(',
   'Rec(': 'Math.hypot(',
   'nPr': 'permutation(',
-  'nCr': 'combination(',
-  '∫dx': 'integral(',
-  'd/dx': 'derivative(',
-  'sinh': 'Math.sinh(',
-  'hyp': 'hypMode('
+  'nCr': 'combination('
 };
-
-function handleSpecialFunctions(value) {
-  switch(value) {
-    case 'shift':
-      state.shift = !state.shift;
-      document.querySelector('.shift-indicator').style.visibility = state.shift ? 'visible' : 'hidden';
-      return '';
-    case 'alpha':
-      state.alpha = !state.alpha;
-      document.querySelector('.alpha-indicator').style.visibility = state.alpha ? 'visible' : 'hidden';
-      return '';
-    case 'hyp':
-      state.hyp = !state.hyp;
-      return '';
-    case 'M+':
-      memory += parseFloat(display.textContent);
-      document.querySelector('.memory-indicator').style.visibility = 'visible';
-      return '';
-    case 'M-':
-      memory -= parseFloat(display.textContent);
-      return '';
-    case 'RCL':
-      return memory.toString();
-    default:
-      return value;
-  }
-}
 
 buttons.forEach(button => {
   button.addEventListener('click', async () => {
     let value = button.dataset.value;
+    let shiftValue = button.dataset.shift;
+
+    // Обработка состояний
+    if (value === 'shift') {
+      state.shift = !state.shift;
+      document.querySelector('.shift-indicator').classList.toggle('visible', state.shift);
+      return;
+    }
     
-    // Определение значения с учетом Shift/Alpha
-    if (state.shift && button.dataset.shift) {
-      value = button.dataset.shift;
+    if (state.shift && shiftValue) {
+      value = shiftValue;
       state.shift = false;
-      document.querySelector('.shift-indicator').style.visibility = 'hidden';
-    }
-    if (state.alpha && button.dataset.alpha) {
-      value = button.dataset.alpha;
-      state.alpha = false;
-      document.querySelector('.alpha-indicator').style.visibility = 'hidden';
+      document.querySelector('.shift-indicator').classList.remove('visible');
     }
 
-    // Обработка специальных функций
-    const specialValue = handleSpecialFunctions(value);
-    if (specialValue !== undefined) value = specialValue;
-
-    // Обработка ввода
+    // Обработка специальных кнопок
     switch(value) {
       case 'AC':
         currentExpression = '';
@@ -118,10 +78,19 @@ buttons.forEach(button => {
       case 'DEL':
         currentExpression = currentExpression.slice(0, -1);
         break;
+      case 'M+':
+        state.memory += parseFloat(display.textContent);
+        document.querySelector('.memory-indicator').classList.add('visible');
+        break;
+      case 'M-':
+        state.memory -= parseFloat(display.textContent);
+        break;
+      case 'RCL':
+        currentExpression += state.memory;
+        break;
       case '=':
         try {
-          let expr = currentExpression;
-          // Замена математических функций
+          let expr = currentExpression.replace(/×/g, '*').replace(/÷/g, '/');
           Object.entries(mathMap).forEach(([key, val]) => {
             expr = expr.replace(new RegExp(key, 'g'), val);
           });
@@ -155,11 +124,10 @@ function permutation(n, k) {
 }
 
 function factorial(num) {
-  if (num < 0) return -1;
   return num <= 1 ? 1 : num * factorial(num - 1);
 }
 
-// Слушатель изменений в Firestore
+// Синхронизация
 onSnapshot(calcRef, (doc) => {
   if (doc.exists()) {
     const data = doc.data();
