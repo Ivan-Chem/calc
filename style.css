@@ -1,75 +1,81 @@
+/* Общие стили */
 body {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  background: #dcdcdc;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 10px;
+  background: #e0e0e0;
   font-family: 'Courier New', monospace;
 }
 
 .calculator {
   background: #a0a0a0;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 
-    0 0 10px rgba(0,0,0,0.3),
-    inset 0 0 15px rgba(255,255,255,0.5);
-  width: 340px;
+  padding: 15px;
+  border-radius: 8px;
+  width: 320px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
 }
 
-.display {
-  background: #c3d7c3;
-  color: #1a1a1a;
-  padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 15px;
-  text-align: right;
-  font-size: 2.5em;
-  min-height: 60px;
-  border: 2px solid #808080;
-}
-
-.display-label {
-  font-size: 0.4em;
-  color: #404040;
-  text-align: left;
-}
-
-.buttons {
+/* Верхние кнопки (8x8mm) */
+.top-buttons {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
+  gap: 3px;
+  margin-bottom: 5px;
 }
 
-button {
-  background: #e0e0e0;
-  border: 2px solid #808080;
-  border-radius: 5px;
-  padding: 12px;
-  font-size: 1.2em;
-  cursor: pointer;
-  transition: all 0.1s;
+.sci-btn {
+  width: 32px;
+  height: 32px;
+  font-size: 0.7em;
+  padding: 2px;
 }
 
-button:active {
-  background: #c0c0c0;
-  transform: scale(0.95);
+/* Центральные кнопки (10x10mm) */
+.mid-buttons {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+  margin-bottom: 8px;
 }
 
-button.func {
-  background: #f0f0f0;
-  font-size: 0.9em;
+.mid-btn {
+  width: 40px;
+  height: 40px;
+  font-size: 0.8em;
 }
 
-button.equal {
-  background: #ff9500;
-  color: white;
+/* Нижние кнопки (12x12mm) */
+.main-buttons {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+}
+
+.main-btn {
+  width: 48px;
+  height: 48px;
+  font-size: 1.1em;
+}
+
+.equal {
+  width: 48px;
+  height: 100px;
   grid-row: span 2;
 }
 
-button[data-value="AC"],
-button[data-value="DEL"] {
-  background: #ff4444;
-  color: white;
+/* Память */
+.memory {
+  background: #d0d0d0;
+  font-size: 0.9em;
+}
+
+/* Дисплей */
+.display {
+  background: #c3d7c3;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 2px solid #808080;
+  text-align: right;
+  font-size: 2em;
 }
