@@ -24,114 +24,124 @@ const display = document.getElementById("display");
 const buttons = document.querySelectorAll("button");
 let currentExpression = "";
 let resultDisplayed = false;
-let state = {
-  shift: false,
-  alpha: false,
-  hyp: false,
-  memory: 0
-};
+let isShift = false;
+let memory = 0;
 
-const mathMap = {
-  'sin(': 'Math.sin(',
-  'cos(': 'Math.cos(',
-  'tan(': 'Math.tan(',
-  'sin⁻¹(': 'Math.asin(',
-  'cos⁻¹(': 'Math.acos(',
-  'tan⁻¹(': 'Math.atan(',
-  '√(': 'Math.sqrt(',
-  '∛': 'Math.cbrt(',
-  'log': 'Math.log10(',
-  'ln': 'Math.log(',
-  'π': 'Math.PI',
-  'eˣ': 'Math.exp(',
-  '10ˣ': '10**',
-  'Rnd': 'Math.round(',
-  'Pol(': 'Math.atan2(',
-  'Rec(': 'Math.hypot(',
-  'nPr': 'permutation(',
-  'nCr': 'combination('
-};
+// Подсветка кнопки (анимация как у Casio)
+function highlightButton(value) {
+  const button = [...buttons].find(btn => btn.dataset.value === value);
+  if (button) {
+    button.style.backgroundColor = "#ff9500";
+    setTimeout(() => {
+      button.style.backgroundColor = button.classList.contains("func") ? "#f0f0f0" : "#e0e0e0";
+    }, 100);
+  }
+}
 
+// Обработка научных функций
+function handleScientificFunctions(value) {
+  switch(value) {
+    case "shift":
+      isShift = !isShift;
+      document.querySelectorAll("[data-shift]").forEach(btn => {
+        btn.textContent = isShift ? btn.dataset.shift : btn.dataset.value;
+      });
+      break;
+
+    case "sin(":
+      return isShift ? "sin⁻¹(" : "sin(";
+
+    case "cos(":
+      return isShift ? "cos⁻¹(" : "cos(";
+
+    case "tan(":
+      return isShift ? "tan⁻¹(" : "tan(";
+
+    case "log":
+      return isShift ? "10^" : "log(";
+
+    case "ln":
+      return isShift ? "e^" : "ln(";
+
+    case "√(":
+      return isShift ? "∛(" : "√(";
+  }
+  return value;
+}
+
+// Основной обработчик
 buttons.forEach(button => {
-  button.addEventListener('click', async () => {
+  button.addEventListener("click", async () => {
     let value = button.dataset.value;
-    let shiftValue = button.dataset.shift;
-
-    // Обработка состояний
-    if (value === 'shift') {
-      state.shift = !state.shift;
-      document.querySelector('.shift-indicator').classList.toggle('visible', state.shift);
-      return;
-    }
-    
-    if (state.shift && shiftValue) {
-      value = shiftValue;
-      state.shift = false;
-      document.querySelector('.shift-indicator').classList.remove('visible');
-    }
+    value = handleScientificFunctions(value);
+    highlightButton(value);
 
     // Обработка специальных кнопок
     switch(value) {
-      case 'AC':
-        currentExpression = '';
+      case "AC":
+        currentExpression = "";
+        display.textContent = "0";
+        resultDisplayed = false;
         break;
-      case 'DEL':
+
+      case "DEL":
         currentExpression = currentExpression.slice(0, -1);
+        display.textContent = currentExpression || "0";
         break;
-      case 'M+':
-        state.memory += parseFloat(display.textContent);
-        document.querySelector('.memory-indicator').classList.add('visible');
+
+      case "M+":
+        memory += parseFloat(display.textContent);
         break;
-      case 'M-':
-        state.memory -= parseFloat(display.textContent);
+
+      case "RCL":
+        currentExpression += memory.toString();
+        display.textContent = currentExpression;
         break;
-      case 'RCL':
-        currentExpression += state.memory;
-        break;
-      case '=':
+
+      case "=":
         try {
-          let expr = currentExpression.replace(/×/g, '*').replace(/÷/g, '/');
-          Object.entries(mathMap).forEach(([key, val]) => {
-            expr = expr.replace(new RegExp(key, 'g'), val);
-          });
-          currentExpression = eval(expr).toString();
+          const expr = currentExpression
+            .replace(/×/g, "*")
+            .replace(/÷/g, "/")
+            .replace(/√/g, "Math.sqrt")
+            .replace(/∛/g, "Math.cbrt")
+            .replace(/\^/g, "**")
+            .replace(/sin/g, "Math.sin")
+            .replace(/cos/g, "Math.cos")
+            .replace(/tan/g, "Math.tan")
+            .replace(/log/g, "Math.log10")
+            .replace(/ln/g, "Math.log")
+            .replace(/π/g, "Math.PI")
+            .replace(/e/g, "Math.E");
+
+          const result = eval(expr);
+          currentExpression = result.toString();
+          display.textContent = currentExpression;
+          resultDisplayed = true;
         } catch {
-          currentExpression = 'Error';
+          display.textContent = "Syntax ERROR";
+          currentExpression = "";
         }
         break;
+
       default:
-        currentExpression += mathMap[value] || value;
+        currentExpression = resultDisplayed ? value : currentExpression + value;
+        display.textContent = currentExpression;
+        resultDisplayed = false;
     }
 
-    // Обновление дисплея
-    display.textContent = currentExpression || '0';
-
-    // Синхронизация с Firebase
-    await updateDoc(calcRef, {
+    await updateDoc(calcRef, { 
       input: currentExpression,
       timestamp: new Date().toISOString()
     });
   });
 });
 
-// Математические функции
-function combination(n, k) {
-  return factorial(n) / (factorial(k) * factorial(n - k));
-}
-
-function permutation(n, k) {
-  return factorial(n) / factorial(n - k);
-}
-
-function factorial(num) {
-  return num <= 1 ? 1 : num * factorial(num - 1);
-}
-
-// Синхронизация
+// Синхронизация с Firestore
 onSnapshot(calcRef, (doc) => {
   if (doc.exists()) {
     const data = doc.data();
-    currentExpression = data.input || '';
-    display.textContent = currentExpression || '0';
+    currentExpression = data.input || "";
+    display.textContent = currentExpression || "0";
   }
 });
