@@ -8,53 +8,76 @@
 </head>
 <body>
   <div class="calculator">
+    <!-- Верхняя панель с кнопкой-курсором -->
+    <div class="top-panel">
+      <button class="cursor-btn">◀▲▼▶</button>
+    </div>
+
     <!-- Дисплей -->
     <div class="display">
       <div class="display-label">DEG</div>
       <div class="display-value" id="display">0</div>
     </div>
 
-    <!-- Верхние узкие кнопки -->
-    <div class="top-buttons">
-      <button class="top-btn" data-value="shift">SHIFT</button>
-      <button class="top-btn" data-value="alpha">ALPHA</button>
-      <button class="top-btn" data-value="mode">MODE</button>
-      <button class="top-btn" data-value="√(">√</button>
-      <button class="top-btn" data-value="x^3">x³</button>
-    </div>
+    <!-- Кнопки с точным расположением -->
+    <div class="buttons">
+      <!-- Верхние узкие кнопки (научные функции) -->
+      <button class="narrow" data-value="shift">SHIFT</button>
+      <button class="narrow" data-value="alpha">ALPHA</button>
+      <button class="narrow" data-value="mode">MODE</button>
+      <button class="narrow" data-value="√(">√</button>
+      <button class="narrow" data-value="x^3">x³</button>
 
-    <!-- Основные кнопки (4 нижних ряда) -->
-    <div class="main-buttons">
+      <!-- Основные ряды (одинаковой ширины) -->
+      <button class="narrow" data-value="sin⁻¹">sin⁻¹</button>
+      <button class="narrow" data-value="cos⁻¹">cos⁻¹</button>
+      <button class="narrow" data-value="tan⁻¹">tan⁻¹</button>
+      <button class="narrow" data-value="log">log</button>
+      <button class="narrow" data-value="ln">ln</button>
+
+      <button class="narrow" data-value="hyp">hyp</button>
+      <button class="narrow" data-value="sin(">sin</button>
+      <button class="narrow" data-value="cos(">cos</button>
+      <button class="narrow" data-value="tan(">tan</button>
+      <button class="narrow" data-value="RCL">RCL</button>
+
+      <button class="narrow" data-value="ENG">ENG</button>
+      <button data-value="(">(</button>
+      <button data-value=")">)</button>
+      <button data-value=",">,</button>
+      <button class="narrow" data-value="M+">M+</button>
+
+      <!-- Нижние 4 ряда (одинаковые по размеру) -->
       <div class="row">
-        <button class="main-btn" data-value="7">7</button>
-        <button class="main-btn" data-value="8">8</button>
-        <button class="main-btn" data-value="9">9</button>
-        <button class="func main-btn" data-value="DEL">DEL</button>
-        <button class="func main-btn" data-value="AC">AC</button>
+        <button data-value="7">7</button>
+        <button data-value="8">8</button>
+        <button data-value="9">9</button>
+        <button class="func" data-value="DEL">DEL</button>
+        <button class="func" data-value="AC">AC</button>
       </div>
 
       <div class="row">
-        <button class="main-btn" data-value="4">4</button>
-        <button class="main-btn" data-value="5">5</button>
-        <button class="main-btn" data-value="6">6</button>
-        <button class="main-btn" data-value="×">×</button>
-        <button class="main-btn" data-value="÷">÷</button>
+        <button data-value="4">4</button>
+        <button data-value="5">5</button>
+        <button data-value="6">6</button>
+        <button data-value="×">×</button>
+        <button data-value="÷">÷</button>
       </div>
 
       <div class="row">
-        <button class="main-btn" data-value="1">1</button>
-        <button class="main-btn" data-value="2">2</button>
-        <button class="main-btn" data-value="3">3</button>
-        <button class="main-btn" data-value="+">+</button>
-        <button class="main-btn" data-value="-">-</button>
+        <button data-value="1">1</button>
+        <button data-value="2">2</button>
+        <button data-value="3">3</button>
+        <button data-value="+">+</button>
+        <button data-value="-">-</button>
       </div>
 
       <div class="row">
-        <button class="main-btn" data-value="0">0</button>
-        <button class="main-btn" data-value=".">.</button>
-        <button class="main-btn" data-value="EXP">EXP</button>
-        <button class="main-btn" data-value="(-)">(-)</button>
-        <button class="equal main-btn" data-value="=">=</button>
+        <button data-value="0">0</button>
+        <button data-value=".">.</button>
+        <button data-value="EXP">EXP</button>
+        <button data-value="(-)">(-)</button>
+        <button class="equal" data-value="=">=</button>
       </div>
     </div>
   </div>

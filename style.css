@@ -1,9 +1,8 @@
-/* Позиционирование калькулятора */
 body {
   display: flex;
-  justify-content: flex-start; /* У верхнего края */
+  justify-content: flex-start; /* Сдвиг к верхнему краю */
   align-items: center;
-  padding-top: 20px;
+  padding-top: 20px; /* Отступ сверху */
   min-height: 100vh;
   margin: 0;
   background: #dcdcdc;
@@ -14,62 +13,87 @@ body {
   background: #a0a0a0;
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  box-shadow: 
+    0 0 10px rgba(0,0,0,0.3),
+    inset 0 0 15px rgba(255,255,255,0.5);
   width: 320px;
   margin: 0 auto;
 }
 
-/* Дисплей */
-.display {
-  background: #c3d7c3;
-  padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 15px;
-  text-align: right;
-  font-size: 2em;
-  border: 2px solid #808080;
-}
-
-/* Верхние кнопки (уже и ниже) */
-.top-buttons {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 5px;
+.top-panel {
   margin-bottom: 10px;
 }
 
-.top-btn {
-  height: 30px; /* Меньшая высота */
+.cursor-btn {
+  width: 100%;
+  height: 30px;
+  border-radius: 15px;
+  background: #e0e0e0;
+  border: 2px solid #808080;
+  font-size: 0.8em;
+}
+
+.display {
+  background: #c3d7c3;
+  color: #1a1a1a;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  text-align: right;
+  font-size: 2.2em;
+  min-height: 50px;
+  border: 2px solid #808080;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+}
+
+/* Верхние узкие кнопки */
+button.narrow {
+  width: 48px;
+  height: 30px;
   font-size: 0.8em;
   padding: 0;
 }
 
-/* Основные кнопки (4 нижних ряда) */
-.main-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+/* Основные кнопки */
+button:not(.narrow) {
+  width: 58px;
+  height: 40px;
 }
 
 .row {
   display: flex;
   gap: 5px;
+  margin-bottom: 5px;
 }
 
-.main-btn {
-  width: 60px; /* Фиксированная ширина */
-  height: 45px; /* Фиксированная высота */
+button {
+  background: #e0e0e0;
+  border: 2px solid #808080;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.1s;
   flex: 1;
 }
 
-/* Кнопка "=" без выступа */
-.equal {
-  background: #ff9500;
-  color: white;
+button:active {
+  background: #c0c0c0;
+  transform: scale(0.95);
 }
 
-/* Функциональные кнопки */
-.func {
+button.equal {
+  background: #ff9500;
+  color: white;
+  height: 85px; /* Высота кнопки "=" как у оригинала */
+  margin-top: -45px; /* Убираем выступ вниз */
+}
+
+button[data-value="AC"],
+button[data-value="DEL"] {
   background: #ff4444;
   color: white;
 }
@@ -77,16 +101,12 @@ body {
 /* Адаптация для мобильных */
 @media (max-width: 480px) {
   .calculator {
-    width: 95%;
+    width: 90%;
     padding: 10px;
   }
-
-  .main-btn {
-    width: 100%; 
+  
+  button:not(.narrow) {
+    width: auto;
     height: 50px;
-  }
-
-  .top-btn {
-    height: 35px;
   }
 }
