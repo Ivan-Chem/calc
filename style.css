@@ -5,12 +5,7 @@ body {
   height: 100vh;
   margin: 0;
   background: #9eadb7;
-  font-family: 'Segment7', monospace;
-}
-
-@font-face {
-  font-family: 'Segment7';
-  src: url('https://fonts.gstatic.com/s/segment7/v4/k3k6o83MPjRqic4I_FhP2DR5TfQ.woff2') format('woff2');
+  font-family: Arial, sans-serif;
 }
 
 .calculator {
@@ -45,15 +40,15 @@ body {
 
 .display-main {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   font-size: 2.2em;
   text-align: right;
+  min-height: 40px;
 }
 
 .value {
-  font-family: 'Segment7', monospace;
+  font-family: monospace;
   letter-spacing: -2px;
-  flex-grow: 1;
   text-align: right;
 }
 
@@ -97,11 +92,12 @@ button.equal {
   grid-row: span 2;
 }
 
-.memory-indicator {
-  color: #d14040;
-  font-weight: bold;
+.memory-indicator,
+.shift-indicator {
+  visibility: hidden;
 }
 
-.shift-indicator {
-  color: #0066cc;
+.memory-indicator.visible,
+.shift-indicator.visible {
+  visibility: visible;
 }
