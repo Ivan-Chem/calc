@@ -13,59 +13,180 @@
         <span class="mode-indicator">DEG</span>
         <span class="memory-indicator">M</span>
         <span class="shift-indicator">SHIFT</span>
+        <span class="alpha-indicator">ALPHA</span>
       </div>
       <div class="display-main">
-        <span class="value" id="display">0</span>
+        <div class="value" id="display">0</div>
       </div>
     </div>
 
-    <div class="buttons">
-      <button class="func red" data-value="AC">AC</button>
-      <button class="func" data-value="mode">MODE</button>
-      <button class="func" data-value="shift">SHIFT</button>
-      <button class="func" data-value="alpha">ALPHA</button>
-      <button class="func" data-value="x³">x³</button>
+    <!-- Верхний блок (2 ряда по 4 кнопки) -->
+    <div class="top-buttons">
+      <!-- Первый ряд -->
+      <div class="row">
+        <button class="func shift-btn" data-value="shift" data-shift="true">
+          <span class="top-label red">SHIFT</span>
+          <span class="main-label">SHIFT</span>
+        </button>
+        <button class="func alpha-btn" data-value="alpha" data-alpha="true">
+          <span class="top-label blue">ALPHA</span>
+          <span class="main-label">ALPHA</span>
+        </button>
+        <button class="func" data-value="mode">
+          <span class="main-label">MODE</span>
+          <span class="bottom-label">SETUP</span>
+        </button>
+        <button class="func red" data-value="AC">
+          <span class="main-label">AC</span>
+          <span class="top-label">ON</span>
+        </button>
+      </div>
       
-      <button class="func" data-value="x⁻¹">x⁻¹</button>
-      <button class="func" data-value="√(">√</button>
-      <button class="func" data-value="log">log</button>
-      <button class="func" data-value="ln">ln</button>
-      <button class="func" data-value="hyp">hyp</button>
+      <!-- Второй ряд -->
+      <div class="row">
+        <button class="func" data-value="x⁻¹" data-shift="x!">
+          <span class="top-label">x!</span>
+          <span class="main-label">x<sup>-1</sup></span>
+        </button>
+        <button class="func" data-value="√(" data-shift="∛(">
+          <span class="top-label">∛</span>
+          <span class="main-label">√</span>
+        </button>
+        <button class="func" data-value="x²" data-shift="x³">
+          <span class="top-label">x³</span>
+          <span class="main-label">x²</span>
+        </button>
+        <button class="func" data-value="log" data-shift="10ˣ">
+          <span class="top-label">10<sup>x</sup></span>
+          <span class="main-label">log</span>
+        </button>
+      </div>
+    </div>
 
-      <button class="func" data-value="sin⁻¹">sin⁻¹</button>
-      <button class="func" data-value="cos⁻¹">cos⁻¹</button>
-      <button class="func" data-value="tan⁻¹">tan⁻¹</button>
-      <button class="func" data-value="RCL">RCL</button>
-      <button class="func" data-value="ENG">ENG</button>
+    <!-- Средний блок (3 ряда по 6 кнопок) -->
+    <div class="middle-buttons">
+      <!-- Первый ряд -->
+      <div class="row">
+        <button class="func" data-value="sin(" data-shift="sin⁻¹(">
+          <span class="top-label">sin<sup>-1</sup></span>
+          <span class="main-label">sin</span>
+        </button>
+        <button class="func" data-value="cos(" data-shift="cos⁻¹(">
+          <span class="top-label">cos<sup>-1</sup></span>
+          <span class="main-label">cos</span>
+        </button>
+        <button class="func" data-value="tan(" data-shift="tan⁻¹(">
+          <span class="top-label">tan<sup>-1</sup></span>
+          <span class="main-label">tan</span>
+        </button>
+        <button class="func" data-value="RCL" data-shift="ENG">
+          <span class="top-label">ENG</span>
+          <span class="main-label">RCL</span>
+        </button>
+        <button class="func" data-value="hyp" data-shift="sinh">
+          <span class="top-label">sinh</span>
+          <span class="main-label">hyp</span>
+        </button>
+        <button class="func" data-value="," data-shift=";">
+          <span class="top-label">;</span>
+          <span class="main-label">,</span>
+        </button>
+      </div>
 
-      <button class="func" data-value="(">(</button>
-      <button class="func" data-value=")">)</button>
-      <button class="func" data-value=",">,</button>
-      <button class="func" data-value="M+">M+</button>
-      <button class="func" data-value="M-">M-</button>
+      <!-- Второй ряд -->
+      <div class="row">
+        <button class="func" data-value="log" data-shift="10ˣ">
+          <span class="top-label">10<sup>x</sup></span>
+          <span class="main-label">log</span>
+        </button>
+        <button class="func" data-value="ln" data-shift="eˣ">
+          <span class="top-label">e<sup>x</sup></span>
+          <span class="main-label">ln</span>
+        </button>
+        <button class="func" data-value="(-)" data-shift="STO">
+          <span class="top-label">STO</span>
+          <span class="main-label">(-)</span>
+        </button>
+        <button class="func" data-value="ENG" data-shift="←">
+          <span class="top-label">←</span>
+          <span class="main-label">ENG</span>
+        </button>
+        <button class="func" data-value="M+" data-shift="M-">
+          <span class="top-label">M-</span>
+          <span class="main-label">M+</span>
+        </button>
+        <button class="func" data-value="a b/c" data-shift="d/c">
+          <span class="top-label">d/c</span>
+          <span class="main-label">a b/c</span>
+        </button>
+      </div>
 
-      <button data-value="7">7</button>
-      <button data-value="8">8</button>
-      <button data-value="9">9</button>
-      <button class="func" data-value="DEL">DEL</button>
-      <button data-value="÷">÷</button>
+      <!-- Третий ряд -->
+      <div class="row">
+        <button class="func" data-value="nPr" data-shift="nCr">
+          <span class="top-label">nCr</span>
+          <span class="main-label">nPr</span>
+        </button>
+        <button class="func" data-value="Pol(" data-shift="Rec(">
+          <span class="top-label">Rec(</span>
+          <span class="main-label">Pol(</span>
+        </button>
+        <button class="func" data-value="∫dx" data-shift="d/dx">
+          <span class="top-label">d/dx</span>
+          <span class="main-label">∫dx</span>
+        </button>
+        <button class="func" data-value="° ' ''" data-shift="←">
+          <span class="top-label">←</span>
+          <span class="main-label">° ' ''</span>
+        </button>
+        <button class="func" data-value="Rnd" data-shift="RndFix">
+          <span class="top-label">RndFix</span>
+          <span class="main-label">Rnd</span>
+        </button>
+        <button class="func" data-value="π" data-shift="e">
+          <span class="top-label">e</span>
+          <span class="main-label">π</span>
+        </button>
+      </div>
+    </div>
 
-      <button data-value="4">4</button>
-      <button data-value="5">5</button>
-      <button data-value="6">6</button>
-      <button data-value="×">×</button>
-      <button data-value="%">%</button>
-
-      <button data-value="1">1</button>
-      <button data-value="2">2</button>
-      <button data-value="3">3</button>
-      <button data-value="+">+</button>
-      <button data-value="-">-</button>
-
-      <button data-value="0" style="grid-column: span 2">0</button>
-      <button data-value=".">.</button>
-      <button data-value="EXP">EXP</button>
-      <button class="equal" data-value="=">=</button>
+    <!-- Нижний блок (5 рядов по 5 кнопок) -->
+    <div class="bottom-buttons">
+      <!-- Ряды 1-4 -->
+      <div class="row">
+        <button data-value="7">7</button>
+        <button data-value="8">8</button>
+        <button data-value="9">9</button>
+        <button class="func" data-value="DEL">DEL</button>
+        <button class="func red" data-value="AC">AC</button>
+      </div>
+      <div class="row">
+        <button data-value="4">4</button>
+        <button data-value="5">5</button>
+        <button data-value="6">6</button>
+        <button data-value="×">×</button>
+        <button data-value="÷">÷</button>
+      </div>
+      <div class="row">
+        <button data-value="1">1</button>
+        <button data-value="2">2</button>
+        <button data-value="3">3</button>
+        <button data-value="+">+</button>
+        <button data-value="-">-</button>
+      </div>
+      <div class="row">
+        <button data-value="0" style="grid-column: span 2">0</button>
+        <button data-value=".">.</button>
+        <button data-value="EXP">EXP</button>
+        <button class="equal" data-value="=">=</button>
+      </div>
+      <div class="row">
+        <button data-value="(">(</button>
+        <button data-value=")">)</button>
+        <button class="func" data-value="Ans">Ans</button>
+        <button class="func" data-value="=">=</button>
+        <button class="func" data-value="S⇔D">S⇔D</button>
+      </div>
     </div>
   </div>
   <script type="module" src="script.js"></script>

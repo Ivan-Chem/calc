@@ -1,22 +1,33 @@
+:root {
+  --main-color: #6b6b6b;
+  --button-bg: #e0e0e0;
+  --func-bg: #f0f0f0;
+  --red: #d9534f;
+  --orange: #f0ad4e;
+  --blue: #5bc0de;
+}
+
 body {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   margin: 0;
-  background: #9eadb7;
-  font-family: Arial, sans-serif;
+  background: #8a9aa4;
+  font-family: 'Segment7', Arial, sans-serif;
+}
+
+@font-face {
+  font-family: 'Segment7';
+  src: url('https://cdn.jsdelivr.net/npm/segment7@1.0.3/segment7.woff2') format('woff2');
 }
 
 .calculator {
-  background: #6b6b6b;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 
-    0 10px 20px rgba(0,0,0,0.3),
-    inset 0 0 1px 2px #5a5a5a;
+  background: var(--main-color);
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
   width: 320px;
-  border: 2px solid #4a4a4a;
 }
 
 .display {
@@ -25,79 +36,96 @@ body {
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 15px;
-  border: 3px inset #808080;
-  min-height: 70px;
-  position: relative;
+  border: 2px inset #808080;
 }
 
 .display-indicators {
   display: flex;
   justify-content: space-between;
-  font-size: 0.8em;
-  color: #2d2d2d;
+  font-size: 0.7em;
   margin-bottom: 5px;
 }
 
 .display-main {
-  display: flex;
-  justify-content: flex-end;
-  font-size: 2.2em;
   text-align: right;
+  font-size: 2.2em;
   min-height: 40px;
 }
 
 .value {
-  font-family: monospace;
+  font-family: 'Segment7', monospace;
   letter-spacing: -2px;
-  text-align: right;
 }
 
-.buttons {
+.top-buttons,
+.middle-buttons,
+.bottom-buttons {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
+  gap: 4px;
+  margin-bottom: 6px;
 }
+
+.row {
+  display: grid;
+  gap: 4px;
+}
+
+.top-buttons .row { grid-template-columns: repeat(4, 1fr); }
+.middle-buttons .row { grid-template-columns: repeat(6, 1fr); }
+.bottom-buttons .row { grid-template-columns: repeat(5, 1fr); }
 
 button {
-  background: linear-gradient(to bottom, #e0e0e0 0%, #c0c0c0 100%);
-  border: 2px solid #4a4a4a;
+  position: relative;
+  background: var(--button-bg);
+  border: 1px solid #888;
   border-radius: 3px;
-  padding: 10px;
-  font-size: 0.9em;
+  padding: 8px 2px;
+  font-size: 0.75em;
+  text-align: center;
   cursor: pointer;
   color: #333;
-  text-shadow: 0 1px 1px rgba(255,255,255,0.5);
-  box-shadow: 0 2px 3px rgba(0,0,0,0.2);
-}
-
-button:active {
-  background: linear-gradient(to bottom, #c0c0c0 0%, #a0a0a0 100%);
-  transform: translateY(1px);
+  min-height: 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 button.func {
-  background: linear-gradient(to bottom, #d0d0d0 0%, #b0b0b0 100%);
+  background: var(--func-bg);
+  font-size: 0.7em;
+}
+
+button.red { background: var(--red); color: white; }
+button.equal { background: var(--orange); color: white; }
+
+.top-label, .bottom-label {
+  font-size: 0.6em;
+  position: absolute;
+  line-height: 1;
+}
+
+.top-label {
+  top: 2px;
+  left: 3px;
+  color: #0066cc;
+}
+
+.bottom-label {
+  bottom: 2px;
+  left: 3px;
+  color: #666;
+}
+
+.main-label {
+  font-size: 1.1em;
+  margin: 2px 0;
+}
+
+.red { color: var(--red); }
+.blue { color: var(--blue); }
+
+.display-indicators span {
+  padding: 0 3px;
   font-size: 0.8em;
-}
-
-button.red {
-  background: linear-gradient(to bottom, #ff6969 0%, #d14040 100%);
-  color: white;
-}
-
-button.equal {
-  background: linear-gradient(to bottom, #ff9500 0%, #e08500 100%);
-  color: white;
-  font-size: 1.2em;
-  grid-row: span 2;
-}
-
-.memory-indicator,
-.shift-indicator {
-  visibility: hidden;
-}
-
-.memory-indicator.visible,
-.shift-indicator.visible {
-  visibility: visible;
 }
